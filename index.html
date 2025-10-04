@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>우리의 시작 - 사랑의 디데이 카운터</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: .5; }
+        }
+        .animate-pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        body {
+            -webkit-tap-highlight-color: transparent;
+            touch-action: pan-y;
+        }
+    </style>
+</head>
+<body>
+    <div class="min-h-screen bg-gradient-to-br from-pink-100 via-purple-100 to-blue-100 flex items-center justify-center p-3 sm:p-4">
+        <div class="bg-white rounded-2xl sm:rounded-3xl shadow-2xl p-4 sm:p-8 w-full max-w-md sm:max-w-2xl">
+            <!-- 헤더 -->
+            <div class="text-center mb-4 sm:mb-8">
+                <div class="flex items-center justify-center gap-2 sm:gap-3 mb-3 sm:mb-4">
+                    <svg class="text-pink-500 fill-pink-500 w-6 h-6 sm:w-8 sm:h-8 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <h1 class="text-2xl sm:text-4xl font-bold text-gray-800">우리의 시작</h1>
+                    <svg class="text-pink-500 fill-pink-500 w-6 h-6 sm:w-8 sm:h-8 animate-pulse" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </div>
+                <p class="text-lg sm:text-xl text-gray-600 mb-2">
+                    <span id="person1">문영기</span> ♥ <span id="person2">홍길동</span>
+                </p>
+                <p class="text-sm sm:text-base text-gray-500" id="startDateText"></p>
+            </div>
+
+            <!-- 메인 카운터 -->
+            <div class="bg-gradient-to-r from-pink-500 to-purple-500 rounded-xl sm:rounded-2xl p-6 sm:p-8 mb-4 sm:mb-6 text-white text-center">
+                <div class="text-4xl sm:text-6xl font-bold mb-2" id="mainCounter">
+                    D+0
+                </div>
+                <div class="text-lg sm:text-2xl opacity-90" id="mainText">
+                    함께한 지 0일째
+                </div>
+            </div>
+
+            <!-- 시간 카운터 -->
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-4 mb-4 sm:mb-6">
+                <div class="bg-pink-50 rounded-lg sm:rounded-xl p-3 sm:p-4 text-center">
+                    <div class="text-xl sm:text-2xl font-bold text-pink-600" id="days">0</div>
+                    <div class="text-xs sm:text-sm text-gray-600">일</div>
+                </div>
+                <div class="bg-purple-50 rounded-lg sm:rounded-xl p-3 sm:p-4 text-center">
+                    <div class="text-xl sm:text-2xl font-bold text-purple-600" id="hours">0</div>
+                    <div class="text-xs sm:text-sm text-gray-600">시간</div>
+                </div>
+                <div class="bg-blue-50 rounded-lg sm:rounded-xl p-3 sm:p-4 text-center">
+                    <div class="text-xl sm:text-2xl font-bold text-blue-600" id="minutes">0</div>
+                    <div class="text-xs sm:text-sm text-gray-600">분</div>
+                </div>
+                <div class="bg-indigo-50 rounded-lg sm:rounded-xl p-3 sm:p-4 text-center">
+                    <div class="text-xl sm:text-2xl font-bold text-indigo-600" id="seconds">0</div>
+                    <div class="text-xs sm:text-sm text-gray-600">초</div>
+                </div>
+            </div>
+
+            <!-- 기념일 -->
+            <div id="milestoneBox" class="bg-gradient-to-r from-yellow-50 to-orange-50 rounded-lg sm:rounded-xl p-4 sm:p-6 border-2 border-yellow-200">
+                <div class="text-center">
+                    <div class="text-sm sm:text-lg text-gray-700 mb-1 sm:mb-2">
+                        다가오는 기념일
+                    </div>
+                    <div class="text-2xl sm:text-3xl font-bold text-orange-600 mb-1" id="milestoneName">
+                        100일
+                    </div>
+                    <div class="text-sm sm:text-base text-gray-600" id="milestoneDay">
+                        100일 후
+                    </div>
+                </div>
+            </div>
+
+            <!-- 푸터 -->
+            <div class="mt-4 sm:mt-6 text-center text-gray-500 text-xs sm:text-sm">
+                💕 매 순간이 소중한 추억입니다 💕
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 시작 날짜 설정: 2025년 10월 4일
+        const startDate = new Date('2025-10-04T00:00:00');
+        const person1 = '문영기';
+        const person2 = '홍길동';
+
+        // 기념일 목록
+        const milestones = [
+            { day: 100, name: '100일' },
+            { day: 200, name: '200일' },
+            { day: 365, name: '1주년' },
+            { day: 500, name: '500일' },
+            { day: 1000, name: '1000일' }
+        ];
+
+        // 날짜 포맷팅
+        const formattedDate = startDate.toLocaleDateString('ko-KR', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        });
+        document.getElementById('startDateText').textContent = formattedDate;
+
+        function updateCounter() {
+            const now = new Date();
+            const diff = now - startDate;
+            
+            const totalDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const totalHours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const totalMinutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const totalSeconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            // 메인 카운터 업데이트
+            document.getElementById('mainCounter').textContent = `D+${totalDays}`;
+            document.getElementById('mainText').textContent = `함께한 지 ${totalDays}일째`;
+            
+            // 세부 카운터 업데이트
+            document.getElementById('days').textContent = totalDays;
+            document.getElementById('hours').textContent = totalHours;
+            document.getElementById('minutes').textContent = totalMinutes;
+            document.getElementById('seconds').textContent = totalSeconds;
+            
+            // 다음 기념일 계산
+            const nextMilestone = milestones.find(m => m.day > totalDays);
+            if (nextMilestone) {
+                const daysUntil = nextMilestone.day - totalDays;
+                document.getElementById('milestoneName').textContent = nextMilestone.name;
+                document.getElementById('milestoneDay').textContent = `${daysUntil}일 후`;
+                document.getElementById('milestoneBox').style.display = 'block';
+            } else {
+                document.getElementById('milestoneBox').style.display = 'none';
+            }
+        }
+
+        // 초기 실행
+        updateCounter();
+        
+        // 1초마다 업데이트
+        setInterval(updateCounter, 1000);
+    </script>
+</body>
+</html>
